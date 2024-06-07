@@ -1,5 +1,38 @@
 class Pet:
-    pass
+    PET_TYPES = ['dog', 'cat', 'rodent', 'bird', 'reptile', 'exotic']
+    all_pets = []
+
+    def __init__(self, name, pet_type, owner=None):
+        self.name = name
+        self.pet_type = pet_type
+        self.owner = owner
+        self.validate_pet_type()
+        Pet.all_pets.append(self)
+
+    def __repr__(self):
+        return f"Pet('{self.name}', '{self.pet_type}')"
+
+    def validate_pet_type(self):
+        if self.pet_type not in Pet.PET_TYPES:
+            raise Exception("Invalid pet type")
+
+    @classmethod
+    def get_sorted_pets(cls):
+        return sorted(cls.all_pets, key=lambda pet: pet.name)
+
 
 class Owner:
-    pass
+    def __init__(self, name):
+        self.name = name
+        self._pets = []
+
+    def add_pet(self, pet):
+        if not isinstance(pet, Pet):
+            raise Exception("Invalid pet type")
+        self._pets.append(pet)
+
+    def get_pets(self):
+        return self._pets
+
+    def get_sorted_pets(self):
+        return sorted(self._pets, key=lambda pet: pet.name)
